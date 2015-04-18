@@ -20,6 +20,9 @@ class Shop extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM s_user');
+		$data['arr'] = $query->result();
+		$this->load->view('json', $data);
 	}
 }
