@@ -18,11 +18,25 @@ class Shop extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
-	{
-		$this->load->database();
-		$query = $this->db->query('SELECT * FROM s_user');
-		$data['arr'] = $query->result();
-		$this->load->view('json', $data);
+
+	public function index() {
+
+		$this -> load -> model('shop_model', '', TRUE);
+		$data['data'] = $this -> shop_model -> list_products();
+
+		$this->load->view('shop_view', $data);
+
 	}
+
+	public function product($user_name = 'wormcih', $product_id = 2) {
+
+		$this -> load -> model('shop_model', '', TRUE);
+
+		$data['data'] = $this -> shop_model -> get_product($user_name, $product_id);
+
+		$this->load->view('product_view', $data);
+
+	}
+
+
 }
