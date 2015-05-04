@@ -1,5 +1,5 @@
 CREATE TABLE s_user (
-	user_id INT NOT NULL AUTO_INCREMENT,
+	user_id INT AUTO_INCREMENT,
 	username VARCHAR(255) NOT NULL,
 	password_h VARCHAR(255) NOT NULL,
 	password_s VARCHAR(255) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE s_shop (
 INSERT INTO s_shop VALUES(1, 'MyStore', 'my-store', 'active');
 
 CREATE TABLE s_category (
-	cat_id INT NOT NULL AUTO_INCREMENT,
+	cat_id INT AUTO_INCREMENT,
 	cat_name VARCHAR(255) NOT NULL,
 	cat_nicename VARCHAR(255) NOT NULL UNIQUE,
 	cat_description TEXT,
@@ -42,7 +42,7 @@ CREATE TABLE s_category (
 INSERT INTO s_category VALUES(1, 'test1', 'test1', 'test1');
 
 CREATE TABLE s_product (
-	product_id INT NOT NULL AUTO_INCREMENT,
+	product_id INT AUTO_INCREMENT,
 	f_user_id INT NOT NULL,
 	f_cat_id INT NOT NULL,
 	f_cover_pic INT NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE s_userlike (
 );
 
 CREATE TABLE s_picture (
-	pic_id INT NOT NULL AUTO_INCREMENT,
+	pic_id INT AUTO_INCREMENT,
 	f_product_id INT,
 	pic_url VARCHAR(255) NOT NULL UNIQUE,
 
@@ -79,6 +79,19 @@ INSERT INTO s_picture VALUES(2, null, 'test2.jpg');
 INSERT INTO s_picture VALUES(3, null, 'test3.jpg');
 INSERT INTO s_picture VALUES(4, null, 'test4.jpg');
 INSERT INTO s_picture VALUES(5, null, 'test5.jpg');
+
+CREATE TABLE s_comment (
+	comment_id INT AUTO_INCREMENT,
+	comment_productid INT NOT NULL,
+	comment_userid INT NOT NULL,
+	comment_title VARCHAR(255),
+	comment_content TEXT NOT NULL,
+	comment_daytime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+	PRIMARY KEY (comment_id),
+	FOREIGN KEY (comment_productid) REFERENCES s_product(product_id),
+	FOREIGN KEY (comment_userid) REFERENCES s_user(user_id)
+);
 
 
 CREATE TABLE s_log (
