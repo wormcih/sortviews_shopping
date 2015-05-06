@@ -104,5 +104,16 @@ CREATE TABLE s_log (
 	PRIMARY KEY (log_id)
 );
 
+CREATE TABLE s_option (
+	option_id INT AUTO_INCREMENT,
+	option_name varchar(64) NOT NULL DEFAULT '',
+	option_value longtext NOT NULL,
+	autoload varchar(20) NOT NULL DEFAULT 'yes',
+	PRIMARY KEY (`option_id`),
+	UNIQUE KEY option_name (option_name)
+);
+
+
 INSERT INTO s_log (log_activity, log_ip) VALUES ('login', '192.168.1.1');
 INSERT INTO s_log (log_activity, log_ip) VALUES ('login fail', 'fdcc:50ee:2263:d1af:xxxx:xxxx:xxxx:xxxx');
+

@@ -8,6 +8,10 @@ class Shop_model extends CI_Model {
 
         }
 
+        public function list_category() {
+
+        }
+
         public function list_products($user_name = 'wormcih') {
 
                 $list_query = 'SELECT product.product_id, user.username AS `shop_owner`, '.
