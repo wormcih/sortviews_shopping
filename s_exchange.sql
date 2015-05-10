@@ -12,7 +12,7 @@ CREATE TABLE s_user (
 	theme INT DEFAULT 1,
 
 	PRIMARY KEY (user_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO s_user VALUES(1, 'wormcih', '-Bh*Y=AA*HE2ELwUmL$WG6^-nPEvjw#G4CkK', 
 	'KHtyJ62E_gU@qwjHhRz2=?@r*D9GvsR7E_DR', 'M', '62321452', 'wewe@gflkg.com', 1, 
@@ -26,7 +26,7 @@ CREATE TABLE s_shop (
 
 	PRIMARY KEY (shop_id),
 	FOREIGN KEY (shop_id) REFERENCES s_user(user_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO s_shop VALUES(1, 'MyStore', 'my-store', 'active');
 
@@ -37,7 +37,7 @@ CREATE TABLE s_category (
 	cat_description TEXT,
 
 	PRIMARY KEY (cat_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO s_category VALUES(1, 'test1', 'test1', 'test1');
 
@@ -46,16 +46,18 @@ CREATE TABLE s_product (
 	f_user_id INT NOT NULL,
 	f_cat_id INT NOT NULL,
 	f_cover_pic INT NOT NULL,
+	product_title VARCHAR(255) NOT NULL,
 	product_description MEDIUMTEXT,
+	product_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	product_status ENUM ('active', 'end', 'removed') DEFAULT 'active',
 
 	PRIMARY KEY (product_id),
 	FOREIGN KEY (f_user_id) REFERENCES s_user(user_id),
 	FOREIGN KEY (f_cat_id) REFERENCES s_category(cat_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO s_product VALUES(1, 1, 1, 1, 'test1', 'active');
-INSERT INTO s_product VALUES(2, 1, 1, 5, 'test2', 'active');
+INSERT INTO s_product VALUES(1, 1, 1, 1, 'Product Sample 1', 'test1', now(), 'active');
+INSERT INTO s_product VALUES(2, 1, 1, 5, 'Product Sample 5', 'test2', now(), 'active');
 
 CREATE TABLE s_userlike (
 	product_id INT NOT NULL,
@@ -63,7 +65,7 @@ CREATE TABLE s_userlike (
 
 	FOREIGN KEY (product_id) REFERENCES s_product(product_id),
 	FOREIGN KEY (user_id) REFERENCES s_user(user_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE s_picture (
 	pic_id INT AUTO_INCREMENT,
@@ -72,13 +74,13 @@ CREATE TABLE s_picture (
 
 	PRIMARY KEY (pic_id),
 	FOREIGN KEY (f_product_id) REFERENCES s_product(product_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO s_picture VALUES(1, null, 'test1.jpg');
-INSERT INTO s_picture VALUES(2, null, 'test2.jpg');
-INSERT INTO s_picture VALUES(3, null, 'test3.jpg');
-INSERT INTO s_picture VALUES(4, null, 'test4.jpg');
-INSERT INTO s_picture VALUES(5, null, 'test5.jpg');
+INSERT INTO s_picture VALUES(1, 1, 'test1.jpg');
+INSERT INTO s_picture VALUES(2, 1, 'test2.jpg');
+INSERT INTO s_picture VALUES(3, 2, 'test3.jpg');
+INSERT INTO s_picture VALUES(4, 2, 'test4.jpg');
+INSERT INTO s_picture VALUES(5, 2, 'test5.jpg');
 
 CREATE TABLE s_comment (
 	comment_id INT AUTO_INCREMENT,
@@ -91,7 +93,7 @@ CREATE TABLE s_comment (
 	PRIMARY KEY (comment_id),
 	FOREIGN KEY (comment_productid) REFERENCES s_product(product_id),
 	FOREIGN KEY (comment_userid) REFERENCES s_user(user_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE s_log (
@@ -102,7 +104,7 @@ CREATE TABLE s_log (
 	log_ip VARCHAR(45),
 
 	PRIMARY KEY (log_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE s_option (
 	option_id INT AUTO_INCREMENT,
@@ -111,7 +113,7 @@ CREATE TABLE s_option (
 	autoload varchar(20) NOT NULL DEFAULT 'yes',
 	PRIMARY KEY (`option_id`),
 	UNIQUE KEY option_name (option_name)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 INSERT INTO s_log (log_activity, log_ip) VALUES ('login', '192.168.1.1');
