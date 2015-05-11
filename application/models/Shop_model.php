@@ -66,6 +66,7 @@ class Shop_model extends CI_Model {
 
         }
 
+        // # Generate JSON for ajax load implement
         public function get_pictureurl($product_id) {
                 $get_query = 'SELECT `pic_url` FROM s_picture WHERE `f_product_id` = ?';
                 $get_sql = $this -> db -> query($get_query, array($product_id));

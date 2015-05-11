@@ -1,9 +1,7 @@
 <?php
 	// show one product
 	if (empty($data[0])) {
-		header("HTTP/1.0 404 Not Found");
-		echo "404 not found!";
-		die();
+		show_404();
 	}
 
 	$product = $data[0];
@@ -61,28 +59,90 @@
 			<div class="product_section">
 				<div class="row">
 					<div class="col-md-6">
-						<p class="cover_picture"><img src="<?php base_url(); ?>/img/ring.png" /></p>
-						<p>img:  <?php echo $product -> cover_pic; ?></p>
-						<p>img:  <?php echo $product -> cover_pic; ?></p>
-
-						<?php foreach ($images as $image) { ?>
+						<p class="cover_picture" style="border: 1px solid #ddd;"><img src="<?php base_url(); ?>/img/<?php echo $product -> cover_pic; ?>" /></p>
+						<p><a href="#">觀看更多圖片</a></p>
+						<?php foreach ($images as $image) { 
+							if ($image -> pic_url == $product -> cover_pic) continue;
+						?>
+						<p>img:  <?php echo $image -> pic_url; ?></p>
 						<?php } ?>
 
 					</div>
 					<div class="col-md-6">
-						<p><span style="color: #3FCA36;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 尚有存貨</span></p>
-						<p>category:  <?php echo $product -> cat_name; ?></p>
-						<p>owner:  <?php echo $product -> shop_owner; ?></p>
-						<p>Description: <?php echo $product -> product_description; ?></p>
-						<p>交收方式: 面交/可郵寄</p>
-						<p>分享至社交媒體:<br/>fb, tw, sina, pin</p>
+						<p>
+							<span><a href=""><span class="label label-primary"><?php echo $product -> cat_name; ?></span></a></span>&nbsp;
+							<span><a href="#"><i class="fa fa-heart"></i> 收藏</a></span>
+						</p>
+				
+						<p>
+							<span style="color: #3FCA36; padding-right: 6px; border-right: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 開放發售中</span>
+							<span>貨品狀況: 全新</span>
+						</p>
+						
+						<p>
+							<span style="font-size: 24px; font-weight: bold; color: #222;">$17,620.00</span> <a href="#">聯絡買家</a>
+							<a class="btn btn-default" type="button" style="margin-top: -10px; margin-left: 6px;">交換卡片</a>
+						</p>
+
+						<p><i class="fa fa-user"></i> 由商舖 <a href="#"><?php echo $product -> shop_owner; ?></a> 提供</p>
+
+
+						<p style="margin: 5px 0; padding: 5px 0; border-bottom: 1px dashed #ddd;"></p>
+
+						<p style="font-weight: bold; font-size: 16px">貨品簡介</p>
+						<p><?php echo $product -> product_description; ?></p>
+						<p>交收方式: 
+							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 面交</span>
+							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 郵寄</span>
+							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 網上轉賬 (paypal)</span>	
+						</p>
+						
+						<p style="font-weight: bold; font-size: 16px">分享至社交媒體:</p>
+						<p>
+							<a href="#"><i class="fa fa-facebook-square" style="font-size: 36px; color: #3b5998;"></i></a>
+							<a href="#"><i class="fa fa-twitter-square" style="font-size: 36px; color: #00aced;"></i></a>
+							<a href="#"><i class="fa fa-pinterest-square" style="font-size: 36px; color: #cb2027;"></i></a>
+							<a href="#"><i class="fa fa-google-plus-square" style="font-size: 36px; color: #dd4b39;"></i></a>
+						</p>
 					</div>
 				</div>
 			</div>
 			
-			<div class="chat_section">
-				<h2>查詢及回應</h2>
-				<p>Hi</p>
+			<div class="desciption_section">
+				<div class="row">
+					<div class="col-md-9">
+						<div class="chat_section">
+							<h2>查詢及回應</h2>
+							<div class="row">
+								<div class="col-md-6">
+								一半
+								</div>
+								<div class="col-md-6">
+								一半
+								</div>
+							</div>
+							<p>Hi</p>
+							<p>注意: 請勿在此張貼個人資料, 如電郵及電話號碼, 請使用 "交換卡片" 功能交換個人資料</p>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="shop_section">
+							<h2>店舖資訊</h2>
+							<p><a href=""><span><?php echo $product -> shop_owner; ?></span></a></p>
+							<p>目前刊登商品: <a href="">10 件</a></p>
+							<p>可靠度: <span style="color: #3FCA36;">高</span></p>
+						</div>
+
+						<div class="relative_section">
+							<h2>其他相關商品</h2>
+							<p><a href=""><span><?php echo $product -> shop_owner; ?></span></a></p>
+						</div>
+
+					</div>
+
+				</div>
+				
 			</div>
 
 
