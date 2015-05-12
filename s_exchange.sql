@@ -48,6 +48,7 @@ CREATE TABLE s_product (
 	f_cover_pic INT NOT NULL,
 	product_title VARCHAR(255) NOT NULL,
 	product_description MEDIUMTEXT,
+	product_price NUMERIC(10, 1) NOT NULL,
 	product_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	product_status ENUM ('active', 'end', 'removed') DEFAULT 'active',
 
@@ -56,8 +57,8 @@ CREATE TABLE s_product (
 	FOREIGN KEY (f_cat_id) REFERENCES s_category(cat_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO s_product VALUES(1, 1, 1, 1, 'Product Sample 1', 'test1', now(), 'active');
-INSERT INTO s_product VALUES(2, 1, 1, 5, 'Product Sample 5', 'test2', now(), 'active');
+INSERT INTO s_product VALUES(1, 1, 1, 1, 'Product Sample 1', 'test1', '123.2', now(), 'active');
+INSERT INTO s_product VALUES(2, 1, 1, 5, 'Product Sample 5', 'test2', '468250.8',now(), 'active');
 
 CREATE TABLE s_userlike (
 	product_id INT NOT NULL,
