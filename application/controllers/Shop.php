@@ -31,9 +31,12 @@ class Shop extends CI_Controller {
 	public function product($user_name = 'wormcih', $product_id = 2) {
 
 		$this -> load -> model('shop_model', '', TRUE);
+		$this -> load -> library('uuid');
 
 		$data['data'] = $this -> shop_model -> get_product($user_name, $product_id);
 		$data['images'] = $this -> shop_model -> get_pictureurl(1);
+
+		$data['uuid'] = $this -> uuid -> v4();
 
 		$this->load->view('shop/shop_item', $data);
 

@@ -45,6 +45,7 @@
 	</head>
 
 	<body>
+		<?php echo $uuid; ?>
 		<div class="container">
 			<div class="breadcrumb_section">
 				<ol class="breadcrumb">
