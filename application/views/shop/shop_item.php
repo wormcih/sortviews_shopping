@@ -1,4 +1,5 @@
 <?php
+	// Move to controller!!!
 	// show one product
 	if (empty($data[0])) {
 		show_404();
@@ -21,7 +22,19 @@
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
+		<!-- JQuery -->
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 
+		<!-- fancyBox -->
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+		
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-buttons.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-buttons.js"></script>
+
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-thumbs.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/helpers/jquery.fancybox-thumbs.js"></script>
+		
 		<style>
 		* {
 			font-family: 'Open Sans', sans-serif;
@@ -36,6 +49,21 @@
 			max-width: 400px;
 		}
 		</style>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".fancybox").fancybox({
+
+					prevEffect		: 'none',
+					nextEffect		: 'none',
+					closeBtn		: false,
+					helpers		: {
+						title	: { type : 'inside' }
+					}
+
+				});
+			});
+		</script>
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -60,7 +88,12 @@
 			<div class="product_section">
 				<div class="row">
 					<div class="col-md-6">
-						<p class="cover_picture" style="border: 1px solid #ddd;"><img src="<?php base_url(); ?>/img/<?php echo $product -> cover_pic; ?>" /></p>
+						<p class="cover_picture" style="border: 1px solid #ddd;">
+							<a class="fancybox" rel="group" href="<?php base_url(); ?>/img/<?php echo $product -> cover_pic; ?>" title="cold forest (picturesbywalther)">
+								<img src="<?php base_url(); ?>/img/<?php echo $product -> cover_pic; ?>" alt="" />
+							</a>
+						</p>
+
 						<p><a href="#">觀看更多圖片</a></p>
 						<?php foreach ($images as $image) { 
 							if ($image -> pic_url == $product -> cover_pic) continue;
@@ -111,6 +144,29 @@
 			
 			<div class="desciption_section">
 				<div class="row">
+
+					<div class="col-md-3">
+						<div class="pending">
+							買家評價俾分
+							限時特價
+							小圖預覽
+							TAG
+							貨品存貨
+						</div>
+
+						<div class="shop_section">
+							<h2>店舖資訊</h2>
+							<p><a href=""><span><?php echo $product -> shop_owner; ?></span></a></p>
+							<p>目前刊登商品: <a href="">10 件</a></p>
+							<p>可靠度: <span style="color: #3FCA36;">高</span></p>
+						</div>
+
+						<div class="relative_section">
+							<h2>其他相關商品</h2>
+							<p><a href=""><span><?php echo $product -> shop_owner; ?></span></a></p>
+						</div>
+					</div>
+
 					<div class="col-md-9">
 						<div class="chat_section">
 							<h2>查詢及回應</h2>
@@ -127,21 +183,6 @@
 						</div>
 					</div>
 
-					<div class="col-md-3">
-						<div class="shop_section">
-							<h2>店舖資訊</h2>
-							<p><a href=""><span><?php echo $product -> shop_owner; ?></span></a></p>
-							<p>目前刊登商品: <a href="">10 件</a></p>
-							<p>可靠度: <span style="color: #3FCA36;">高</span></p>
-						</div>
-
-						<div class="relative_section">
-							<h2>其他相關商品</h2>
-							<p><a href=""><span><?php echo $product -> shop_owner; ?></span></a></p>
-						</div>
-
-					</div>
-
 				</div>
 				
 			</div>
@@ -152,7 +193,7 @@
 
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	</body>
