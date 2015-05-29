@@ -18,6 +18,17 @@ INSERT INTO s_user VALUES(1, 'wormcih', '-Bh*Y=AA*HE2ELwUmL$WG6^-nPEvjw#G4CkK',
 	'KHtyJ62E_gU@qwjHhRz2=?@r*D9GvsR7E_DR', 'M', '62321452', 'wewe@gflkg.com', 1, 
 	'WdGsTtnhawff2GM2vba85mApbWRs4WFCMcEw', NOW(), 1);
 
+CREATE TABLE s_user_metadata (
+	meta_id INT AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	meta_key VARCHAR(32) NOT NULL,
+	meta_value LONGTEXT NOT NULL,
+
+	PRIMARY KEY (meta_id),
+	FOREIGN KEY (user_id) REFERENCES s_user(user_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE s_shop (
 	shop_id INT,
 	shop_name VARCHAR(255) NOT NULL,
@@ -30,22 +41,44 @@ CREATE TABLE s_shop (
 
 INSERT INTO s_shop VALUES(1, 'MyStore', 'my-store', 'active');
 
-CREATE TABLE s_category (
-	cat_id INT AUTO_INCREMENT,
-	cat_name VARCHAR(255) NOT NULL,
-	cat_nicename VARCHAR(255) NOT NULL UNIQUE,
-	cat_description TEXT,
+CREATE TABLE s_term_relationship (
+	object_id INT NOT NULL DEFAULT 0,
+	taxonomy_id INT NOT NULL,
+	term_order INT(11) NOT NULL DEFAULT 0,
 
-	PRIMARY KEY (cat_id)
+	PRIMARY KEY (object_id),
+	FOREIGN KEY (taxonomy_id) REFERENCES s_term_taxonomy(taxonomy_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO s_category VALUES(1, 'test1', 'test1', 'test1');
+INSERT INTO s_term_relationship VALUES(1, 1, 0);
+INSERT INTO s_term_relationship VALUES(2, 1, 0);
+
+CREATE TABLE s_term_taxonomy (
+	taxonomy_id INT AUTO_INCREMENT,
+	term_id INT NOT NULL,
+	taxonomy VARCHAR(32) NOT NULL,
+	taxonomy_description LONGTEXT,
+	taxonomy_count INT NOT NULL DEFAULT 0,
+
+	PRIMARY KEY (taxonomy_id),
+	FOREIGN KEY (term_id) REFERENCES s_terms(term_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO s_term_taxonomy VALUES(1, 1, 'category', '', 1);
+
+CREATE TABLE s_terms (
+	term_id INT AUTO_INCREMENT,
+	term_name VARCHAR(200),
+	term_slug VARCHAR(200),
+
+	PRIMARY KEY (term_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO s_terms VALUES(1, 'test1', 'test1');
 
 CREATE TABLE s_product (
 	product_id INT AUTO_INCREMENT,
-	f_user_id INT NOT NULL,
-	f_cat_id INT NOT NULL,
-	f_cover_pic INT NOT NULL,
+	user_id INT NOT NULL,
 	product_title VARCHAR(255) NOT NULL,
 	product_description MEDIUMTEXT,
 	product_price NUMERIC(10, 1) NOT NULL,
@@ -53,35 +86,25 @@ CREATE TABLE s_product (
 	product_status ENUM ('active', 'end', 'removed') DEFAULT 'active',
 
 	PRIMARY KEY (product_id),
-	FOREIGN KEY (f_user_id) REFERENCES s_user(user_id),
-	FOREIGN KEY (f_cat_id) REFERENCES s_category(cat_id)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO s_product VALUES(1, 1, 1, 1, 'Product Sample 1', 'test1', '123.2', now(), 'active');
-INSERT INTO s_product VALUES(2, 1, 1, 5, 'Product Sample 5', 'test2', '468250.8',now(), 'active');
-
-CREATE TABLE s_userlike (
-	product_id INT NOT NULL,
-	user_id INT NOT NULL,
-
-	FOREIGN KEY (product_id) REFERENCES s_product(product_id),
 	FOREIGN KEY (user_id) REFERENCES s_user(user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE s_picture (
-	pic_id INT AUTO_INCREMENT,
-	f_product_id INT,
-	pic_url VARCHAR(255) NOT NULL UNIQUE,
+INSERT INTO s_product VALUES(1, 1, 'Product Sample 1', 'test1', '123.2', now(), 'active');
+INSERT INTO s_product VALUES(2, 1, 'Product Sample 5', 'test2', '468250.8', now(), 'active');
 
-	PRIMARY KEY (pic_id),
-	FOREIGN KEY (f_product_id) REFERENCES s_product(product_id)
+CREATE TABLE s_product_metadata (
+	meta_id INT AUTO_INCREMENT,
+	product_id INT NOT NULL,
+	meta_key VARCHAR(32) NOT NULL,
+	meta_value LONGTEXT NOT NULL,
+
+	PRIMARY KEY (meta_id),
+	FOREIGN KEY (product_id) REFERENCES s_product(product_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO s_picture VALUES(1, 1, 'test1.jpg');
-INSERT INTO s_picture VALUES(2, 1, 'test2.jpg');
-INSERT INTO s_picture VALUES(3, 2, 'test3.jpg');
-INSERT INTO s_picture VALUES(4, 2, 'test4.jpg');
-INSERT INTO s_picture VALUES(5, 2, 'test5.jpg');
+INSERT INTO s_product_metadata VALUES(1, 1, 'picture', 'test1.jpg');
+INSERT INTO s_product_metadata VALUES(2, 1, 'picture', 'test2.jpg');
+INSERT INTO s_product_metadata VALUES(3, 2, 'picture', 'test3.jpg');
 
 CREATE TABLE s_comment (
 	comment_id INT AUTO_INCREMENT,
@@ -96,6 +119,15 @@ CREATE TABLE s_comment (
 	FOREIGN KEY (comment_userid) REFERENCES s_user(user_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE s_comment_metadata (
+	meta_id INT AUTO_INCREMENT,
+	comment_id INT NOT NULL,
+	meta_key VARCHAR(32) NOT NULL,
+	meta_value LONGTEXT NOT NULL,
+
+	PRIMARY KEY (meta_id),
+	FOREIGN KEY (comment_id) REFERENCES s_comment(comment_id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE s_log (
 	log_id bigint NOT NULL AUTO_INCREMENT,
