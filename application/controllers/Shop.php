@@ -22,10 +22,31 @@ class Shop extends CI_Controller {
 	public function index() {
 
 		$this -> load -> model('shop_model', '', TRUE);
-		$data['data'] = $this -> shop_model -> list_products();
+		$data['data'] = $this -> shop_model -> get_products();
 
 		$this->load->view('shop_view', $data);
 
+	}
+
+	public function product_list($datatype, $slug, $page = 1) {
+		switch ($datatype) {
+			case 'category':
+			case 'tag':
+				$this -> load -> model('shop_model', '', TRUE);
+				$data['dataset'] = $this -> shop_model -> get_products($slug, $datatype, $page);
+				break;
+			case 'user':
+				$this -> load -> model('shop_model', '', TRUE);
+				$data['dataset'] = $this -> shop_model -> get_user_products($slug);
+				break;
+			default:
+				$data['dataset'] = '';
+				break;
+		}
+
+		$this->load->view('header');
+		$this->load->view('shop/shop_list', $data);
+		$this->load->view('footer');
 	}
 
 	public function product($user_name = 'wormcih', $product_id = 2) {
@@ -34,6 +55,15 @@ class Shop extends CI_Controller {
 		$this -> load -> library('uuid');
 
 		$data['data'] = $this -> shop_model -> get_product($user_name, $product_id);
+
+		if (empty($data['data'][0])) {
+			show_404();
+			return;
+		}
+
+		$data['meta'] = $this -> shop_model -> get_product_metadata($user_name, $product_id);
+		$data['taxonomy'] = $this -> shop_model -> get_product_taxonomy($product_id);
+
 		$data['images'] = $this -> shop_model -> get_pictureurl(1);
 
 		$data['uuid'] = $this -> uuid -> v4();
