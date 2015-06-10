@@ -9,16 +9,20 @@ class Shop_model extends CI_Model {
         }
 
 
-        public function list_taxonomy($taxonomy = 'category') {
+        public function list_taxonomy($taxonomy = 'category', $page = 1, $limit = 10) {
 
                 // function: return taxonomy list
                 // default taxonomy available:  - category
                 //                              - tag
                 //
                 // require/optional:     1..taxonomy
+                //                       2..page
+                //                       3..limit
 
                 // if success, return key
                 // | term_name | term_slug | taxonomy_count |
+
+                $page_index = ($page - 1) * $limit;
 
                 $list_query = 'SELECT term.term_name, term.term_slug, t.taxonomy_count '.
                         'FROM s_terms AS term '.
@@ -26,9 +30,10 @@ class Shop_model extends CI_Model {
                         'INNER JOIN s_term_taxonomy AS t '.
                         'ON term.term_id = t.term_id '.
 
-                        'WHERE t.taxonomy = ?';
+                        'WHERE t.taxonomy = ? '.
+                        'LIMIT ?, ?';
 
-                $list_sql = $this -> db -> query($list_query, array($taxonomy));
+                $list_sql = $this -> db -> query($list_query, array($taxonomy, $page_index, $limit));
 
                 return $list_sql -> result();
 
