@@ -227,4 +227,26 @@ class Shop_model extends CI_Model {
                 return $get_sql -> result();
         }
 
+        public function get_comments($product_id, $page = 1, $limit = 10){
+
+                // function: return product comment
+                // require:     1..product_id
+
+                // if success, return keys
+                // | username | comment_content | comment_daytime | comment_title |
+
+                $page_index = ($page - 1) * $limit;
+
+                $get_query = 'SELECT u.username, c.comment_title, c.comment_content, c.comment_daytime '.
+                        'FROM s_comment AS c '.
+                        'INNER JOIN s_user AS u ON u.user_id = c.comment_userid '.
+                        'WHERE c.comment_productid = ? '.
+                        'ORDER BY c.comment_daytime DESC '.
+                        'LIMIT ?, ?';
+                $get_sql = $this -> db ->query($get_query, array($product_id, $page_index, $limit));
+
+                return $get_sql -> result();
+
+        }
+
 }
