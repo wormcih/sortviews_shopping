@@ -97,9 +97,11 @@ INSERT INTO s_product VALUES(2, 1, 'Product Sample 5', 'test2', '468250.8', now(
 
 CREATE TABLE s_product_metadata (
 	meta_id INT AUTO_INCREMENT,
-	product_id INT NOT NULL,
+	product_id INT NOT NULL DEFAULT 0,
 	meta_key VARCHAR(32) NOT NULL,
 	meta_value LONGTEXT NOT NULL,
+	user_id INT NOT NULL,
+	meta_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
 	PRIMARY KEY (meta_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

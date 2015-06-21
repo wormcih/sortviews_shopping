@@ -57,6 +57,8 @@ $route['shop/(:any)/(:num)'] = 'shop/product/$1/$2';
 $route['category/(:any)'] = 'shop/product_list/category/$1';
 $route['tag/(:any)'] = 'shop/product_list/tag/$1';
 
+$route['upload'] = 'upload/index';
+
 
 
 $route['404_override'] = '';
