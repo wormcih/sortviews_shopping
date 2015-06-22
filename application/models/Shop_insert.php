@@ -48,19 +48,7 @@ class Shop_insert extends CI_Model {
 
         }
 
-        public function index_img($original_url, $user_id) {
-
-        	$index_status = false; $img_url = '';
-
-        	do {
-
-        		$img_url = $this -> generate_imgurl().'.jpg';
-        		$check_sql = 'SELECT count(meta_id) FROM s_product_metadata WHERE meta_value = ?';
-        		$check_query = $this -> db -> query($check_sql, array($img_url));
-
-        		if (count($check_query) == 0) $index_status = true;
-
-        	} while (!$index_status);
+        public function index_img($img_url, $user_id) {
 
         	$index_sql = 'INSERT INTO s_product_metadata (meta_key, meta_value, user_id)  '.
         			'VALUES (?, ?, ?)';
@@ -69,7 +57,25 @@ class Shop_insert extends CI_Model {
         	return $img_url;
         }
 
-        private function generate_imgurl($length = 8) {
+        public function generate_imgurl() {
+
+            $index_status = false; $img_url = '';
+
+            do {
+
+                $img_url = $this -> generate_randomstring().'.jpg';
+                $check_sql = 'SELECT count(meta_id) FROM s_product_metadata WHERE meta_value = ?';
+                $check_query = $this -> db -> query($check_sql, array($img_url));
+
+                if (count($check_query) == 0) $index_status = true;
+
+            } while (!$index_status);
+
+            return $img_url;
+
+        }
+
+        private function generate_randomstring($length = 12) {
         	
         	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 		    $count = mb_strlen($chars);
