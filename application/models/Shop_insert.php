@@ -50,18 +50,30 @@ class Shop_insert extends CI_Model {
 
         public function index_img($img_url, $user_id) {
 
+<<<<<<< Updated upstream
         	$index_sql = 'INSERT INTO s_product_metadata (meta_key, meta_value, user_id)  '.
         			'VALUES (?, ?, ?)';
         	$index_query = $this -> db -> query($index_sql, array('picture', $img_url, $user_id));
 
         	return $img_url;
         }
+=======
+        	$index_status = false; $img_url = '';
+        	$img_url = $original_url;
+        	/*
+        	do {
+>>>>>>> Stashed changes
 
         public function generate_imgurl() {
 
             $index_status = false; $img_url = '';
 
+<<<<<<< Updated upstream
             do {
+=======
+        	} while (!$index_status);
+        	*/
+>>>>>>> Stashed changes
 
                 $img_url = $this -> generate_randomstring().'.jpg';
                 $check_sql = 'SELECT count(meta_id) FROM s_product_metadata WHERE meta_value = ?';
@@ -75,8 +87,13 @@ class Shop_insert extends CI_Model {
 
         }
 
+<<<<<<< Updated upstream
         private function generate_randomstring($length = 12) {
         	
+=======
+        private function generate_imgurl($length = 8) {
+
+>>>>>>> Stashed changes
         	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 		    $count = mb_strlen($chars);
 
