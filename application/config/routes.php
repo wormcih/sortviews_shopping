@@ -59,6 +59,10 @@ $route['tag/(:any)'] = 'shop/product_list/tag/$1';
 
 $route['upload'] = 'upload/index';
 
+$route['manage/add_shop'] = 'user_manage/index';
+$route['manage/add_shop/process'] = 'user_manage/add_product';
+
+
 
 
 $route['404_override'] = '';

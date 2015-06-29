@@ -15,14 +15,19 @@ class Upload extends CI_Controller {
 
         public function do_upload()
         {
+
                 $config['upload_path']          = './img/';
                 $config['allowed_types']        = 'gif|jpg|png';
                 //$config['max_size']             = 100;
 
                 $this->load->library('upload', $config);
 
-                if (!$this->upload->do_upload()) {
-                        $data['json'] = array('status' => 'fail', 'msg' => $this->upload->display_errors());
+                if (!$this->upload->do_upload('0')) {
+                        $data['json'] = array('file' => count($_FILES), 'status' => 'fail', 'msg' => $this->upload->display_errors());
+
+                        foreach ($_FILES as $key => $val) {
+                            array_push($data['json'], array('key' => $key, 'val' => $val));
+                        }
 
                         $this->load->view('json', $data);
 
