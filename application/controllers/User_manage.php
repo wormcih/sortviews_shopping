@@ -9,8 +9,12 @@ class User_manage extends CI_Controller {
 
     public function index($user = 1) {
 
+        $this -> load -> model('shop_insert', '', TRUE);
+
+        $data['category'] = $this -> shop_insert -> list_categoryname();
+
     	$this->load->view('header');
-		$this->load->view('user/user_create_product');
+		$this->load->view('user/user_create_product', $data);
 		$this->load->view('footer');
 
     }

@@ -245,7 +245,7 @@ class Shop_model extends CI_Model {
                         'LIMIT ?, ?';
                 $get_sql = $this -> db ->query($get_query, array($product_id, $page_index, $limit));
 
-                return $get_sql -> result();
+                return $get_sql -> result_array();
 
         }
 

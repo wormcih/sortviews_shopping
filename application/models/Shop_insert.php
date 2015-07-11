@@ -34,6 +34,11 @@ class Shop_insert extends CI_Model {
 
             if ($this -> db -> insert_id()) return true;
 
+            // payment_face
+            // payment_paypal
+            // payment_mail
+            // good_status
+
 
             /*
             product_title VARCHAR(255) NOT NULL,
@@ -43,8 +48,20 @@ class Shop_insert extends CI_Model {
             product_status ENUM ('active', 'end', 'removed') DEFAULT 'active',
             */
 
+        }
 
+        private function set_product_paymentinfo($payment_array) {
+            $payment_key = array('payment_face', 'payment_mail', 'payment_paypal');
+            $index = 0;
+            foreach ($payment_array as $value) {
+                $this -> add_product_meta($payment_key[$index], $value);
+                $index += 1;
+                if ($index >= count($payment_key)) break;
+                
+            }
+        }
 
+        private function add_product_meta($key, $val) {
 
         }
 
@@ -87,10 +104,41 @@ class Shop_insert extends CI_Model {
         private function flush_img() {
             // function: remove unused image
 
-            $flush_sql = 'DELETE from s_product_metadata WHERE product_id = <> '.
+            $flush_sql = 'DELETE from s_product_metadata WHERE product_id <> '.
             '(SELECT product_id FROM s_product)'; // add duration
 
             $flush_query = $this -> db -> query($flush_sql);
+
+        }
+
+
+        public function list_categoryname() {
+
+                // function: return category name list
+                //                              - tag
+                //
+
+                // if success, return key
+                // | term_name | term_slug | taxonomy_count |
+
+
+                $list_query = 'SELECT term.term_name, term.term_slug, t.taxonomy_count '.
+                        'FROM s_terms AS term '.
+
+                        'INNER JOIN s_term_taxonomy AS t '.
+                        'ON term.term_id = t.term_id '.
+
+                        'WHERE t.taxonomy = "category"';
+
+                $list_sql = $this -> db -> query($list_query);
+
+                $return_array = array();
+                foreach ($list_sql -> result_array() as $key) {
+                    array_push($return_array, array("name" => $key['term_name'], "slug" => $key['term_slug']));
+                };
+
+
+                return $return_array;
 
         }
 
