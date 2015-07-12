@@ -73,9 +73,12 @@ $(document).ready(function(){
 		var thumb_text = '-thumb';
 
 		// generate img url
-		return_code += '<input type="radio" name="test" id="inlineRadio1" value="' + file_name + file_ext + '"> ';
+		return_code += '<label>';
+		return_code += '<input type="radio" name="img_cover" value="' + file_name + file_ext + '"> ';
 		return_code += '<img src="../../img/' + file_name + thumb_text + file_ext + '"/>';
 		return_code += '<input type="hidden" value="' + file_name + file_ext + '" name="product_pic[]">';
+		return_code += '</label>';
+
 
 
 		return return_code;

@@ -68,8 +68,6 @@
 
 	<body>
 		<?php echo $uuid; ?>
-		<?php print_r($meta); ?>
-		<?php print_r($taxonomy); ?>
 		<div class="container">
 			<div class="breadcrumb_section">
 				<ol class="breadcrumb">
@@ -110,10 +108,12 @@
 						<p>
 							<?php 
 								$category_list = '';
-								foreach ($taxonomy['category'] as $index => $val) {
-									$category_list = $category_list.'<a href="'.$val['slug'].'">'.
-									'<span class="label label-primary">'.$val['name'].'</span></a> ';
-				
+								if (isset($taxonomy['category'])) {
+									foreach ($taxonomy['category'] as $index => $val) {
+										$category_list = $category_list.'<a href="'.$val['slug'].'">'.
+										'<span class="label label-primary">'.$val['name'].'</span></a> ';
+					
+									}
 								}
 							?>
 							<span><?php echo $category_list; ?></span>&nbsp;
@@ -122,8 +122,11 @@
 				
 						<p>
 							<?php 
+							$good_status = '未知';
+							if (isset($meta['good_status'])){
 							if ($meta['good_status'] == 'new') $good_status = '全新';
 							else $good_status = '中古品';
+							}
 							?>
 							<span style="color: #3FCA36; padding-right: 6px; border-right: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 開放發售中</span>
 							<span>貨品狀況: <?php echo $good_status; ?></span>
@@ -134,7 +137,7 @@
 							<a class="btn btn-default" type="button" style="margin-top: -10px; margin-left: 6px;">聯絡買家</a>
 						</p>
 
-						<p><i class="fa fa-user"></i> 由會員 <a href="#"><?php echo $product -> username; ?></a> 提供</p>
+						<p><i class="fa fa-user"></i> 由會員 <a href="<?php echo base_url().'shop/'.$product -> username; ?>"><?php echo $product -> username; ?></a> 提供</p>
 
 
 						<p style="margin: 5px 0; padding: 5px 0; border-bottom: 1px dashed #ddd;"></p>
@@ -143,24 +146,30 @@
 						<p><?php echo $product -> product_description; ?></p>
 						<p>交收方式: 
 							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-<?php if ($meta['payment_face'] == 1){ ?>ok<?php } else { ?>remove<?php };?>" aria-hidden="true"></span> 面交</span>
-							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-<?php if ($meta['payment_paypal'] == 1){ ?>ok<?php } else { ?>remove<?php };?>" aria-hidden="true"></span> 郵寄</span>
-							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 網上轉賬 (paypal)</span>	
+							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-<?php if ($meta['payment_mail'] == 1){ ?>ok<?php } else { ?>remove<?php };?>" aria-hidden="true"></span> 郵寄</span>
+							<span style="color: #3699CA; padding: 4px; border: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-<?php if ($meta['payment_paypal'] == 1){ ?>ok<?php } else { ?>remove<?php };?>" aria-hidden="true"></span> 網上轉賬 (paypal)</span>	
 						</p>
 						
 						<p style="font-weight: bold; font-size: 16px">分享至社交媒體:</p>
 						<p>
-							<a href="#"><i class="fa fa-facebook-square" style="font-size: 36px; color: #3b5998;"></i></a>
-							<a href="#"><i class="fa fa-twitter-square" style="font-size: 36px; color: #00aced;"></i></a>
+							<?php 
+							$facebook_share = 'https://www.facebook.com/sharer/sharer.php?u='.current_url();
+							$twitter_share = 'https://twitter.com/share?url='.current_url().'&text=By_sortview' ?>
+							<a href="<?php echo $facebook_share; ?>"><i class="fa fa-facebook-square" style="font-size: 36px; color: #3b5998;"></i></a>
+							<a href="<?php echo $twitter_share; ?>"><i class="fa fa-twitter-square" style="font-size: 36px; color: #00aced;"></i></a>
 							<a href="#"><i class="fa fa-pinterest-square" style="font-size: 36px; color: #cb2027;"></i></a>
 							<a href="#"><i class="fa fa-google-plus-square" style="font-size: 36px; color: #dd4b39;"></i></a>
 						</p>
 						<?php 
-							$tag_list = '';
+						$tag_list = '';
+						if (isset($taxonomy['tag'])) {
+							
 							foreach ($taxonomy['tag'] as $index => $val) {
 								$tag_list = $tag_list.'<a href="'.$val['slug'].'">'.
 								'<span class="label label-primary">'.$val['name'].'</span></a> ';
 				
 							}
+						}
 						?>
 						<p><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> <?php echo $tag_list; ?></p>
 					</div>

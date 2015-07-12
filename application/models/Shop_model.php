@@ -41,12 +41,16 @@ class Shop_model extends CI_Model {
 
         public function get_user_products($username, $limit = 10) {
 
-                $get_query = 'SELECT p.product_id, u.username, p.product_title, p.product_price, i.img_src FROM s_product AS p '.
+                $get_query = 'SELECT p.product_id, u.username, p.product_title, p.product_price, i.meta_value AS img_src FROM s_product AS p '.
 
-                'INNER JOIN s_product_img AS i ON i.product_id = p.product_id '.
+                'INNER JOIN s_product_metadata AS i ON i.product_id = p.product_id '.
                 'INNER JOIN s_user AS u ON u.user_id = p.user_id '.
 
-                'WHERE u.username = ? AND i.img_type = ? LIMIT 10';
+                'WHERE u.username = ? AND i.meta_key = ? LIMIT ?';
+
+                $get_sql = $this -> db -> query($get_query, array($username, 'feature_picture', $limit));
+
+                return $get_sql -> result();
         }
 
         public function get_products($slug = 'test1', $taxonomy = 'category', $page = 1, $limit = 10) {
@@ -108,10 +112,10 @@ class Shop_model extends CI_Model {
                 $picture_key = 'feature_picture'; // picture key, default is 'feature_picture'
 
                 $get_query = 'SELECT u.username, p.product_title, p.product_description, p.product_price, p.product_timestamp, '.
-                        'p.product_status, img.img_src AS feature_picture '.
+                        'p.product_status, img.meta_value AS feature_picture '.
                         'FROM s_product AS p '.
 
-                        'INNER JOIN s_product_img AS img '.
+                        'INNER JOIN s_product_metadata AS img '.
                         'ON p.product_id = img.product_id '.
 
                         'INNER JOIN s_user AS u '.
@@ -119,7 +123,7 @@ class Shop_model extends CI_Model {
 
                         'WHERE u.username = ? '.
                         'AND p.product_id = ? '.
-                        'AND img.img_type = ? '.
+                        'AND img.meta_key = ? '.
 
                         'LIMIT 1;';
 
@@ -201,7 +205,7 @@ class Shop_model extends CI_Model {
                 $get_sql = $this -> db -> query($get_query, array($product_id));
 
                 $dataset = $get_sql -> result();
-                $category_index = 0; $tag_index = 0;
+                $category_index = 0; $tag_index = 0; $taxonomy = '';
                 foreach ($dataset as $col) {
                         if ($col -> taxonomy == 'category') {
                                 $taxonomy['category'][$category_index]['name'] = $col -> term_name;
@@ -221,7 +225,7 @@ class Shop_model extends CI_Model {
         public function get_pictureurl($product_id) {
                 $picture_type = 'picture';
 
-                $get_query = 'SELECT img_src FROM s_product_img WHERE product_id = ? AND img_type = ?';
+                $get_query = 'SELECT meta_value AS img_src FROM s_product_metadata WHERE product_id = ? AND meta_key = ?';
                 $get_sql = $this -> db -> query($get_query, array($product_id, $picture_type));
 
                 return $get_sql -> result();

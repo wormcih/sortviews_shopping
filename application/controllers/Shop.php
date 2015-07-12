@@ -49,7 +49,7 @@ class Shop extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	public function product($user_name = 'wormcih', $product_id = 2) {
+	public function product($user_name = 'wormcih', $product_id) {
 
 		$this -> load -> model('shop_model', '', TRUE);
 		$this -> load -> library('uuid');
@@ -64,7 +64,7 @@ class Shop extends CI_Controller {
 		$data['meta'] = $this -> shop_model -> get_product_metadata($user_name, $product_id);
 		$data['taxonomy'] = $this -> shop_model -> get_product_taxonomy($product_id);
 
-		$data['images'] = $this -> shop_model -> get_pictureurl(1);
+		$data['images'] = $this -> shop_model -> get_pictureurl($product_id);
 
 		$data['uuid'] = $this -> uuid -> v4();
 

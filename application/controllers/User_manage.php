@@ -27,6 +27,9 @@ class User_manage extends CI_Controller {
         $product_content['product_title'] = $this -> input -> post('product_title');
         $product_content['product_description'] = $this -> input -> post('product_description');
         $product_content['product_price'] = $this -> input -> post('product_price');
+        $product_content['payment_way'] = $this -> input -> post('payment_way[]');
+        $product_content['product_pic'] = $this -> input -> post('product_pic[]');
+        $product_content['product_cover'] = $this -> input -> post('img_cover');
         $product_content['product_status'] = 'ACTIVE';
 
         $this -> shop_insert -> add_product(1, $product_content);
