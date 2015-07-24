@@ -68,7 +68,9 @@ class Shop extends CI_Controller {
 
 		$data['uuid'] = $this -> uuid -> v4();
 
+		$this->load->view('header');
 		$this->load->view('shop/shop_item', $data);
+		$this->load->view('footer');
 
 	}
 

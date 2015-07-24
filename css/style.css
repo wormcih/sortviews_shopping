@@ -1,0 +1,40 @@
+* {
+	font-family: 'Open Sans', sans-serif;
+}
+
+p.cover_picture {
+	text-align: center;
+}
+
+p.cover_picture img {
+	width: 100%;
+	max-width: 400px;
+}
+
+a {
+	/*color: #749D75;*/
+	color: #867fb3;
+}
+
+a:hover {
+	/*color: #567657;*/
+	color: #565173;
+}
+
+div.header {
+	padding: 10px 0;
+}
+
+div.header div.header_logo {
+	text-align: center;
+}
+
+div.header_nav ul {
+	padding: 0;
+	text-align: center;
+}
+
+div.header_nav ul li {
+	display: inline-block;
+	padding: 0 10px;
+}
