@@ -11,6 +11,15 @@ $(document).ready(function(){
 		upload();
 	}
 
+	function baseurl() {
+		pathArray = location.href.split( '/' );
+		protocol = pathArray[0];
+		host = pathArray[2];
+		url = protocol + '//' + host;
+
+		return url;
+	}
+
 	function upload(){
 		if ($('form span.status').length){
 			$('form span.status').remove();
@@ -24,7 +33,7 @@ $(document).ready(function(){
 			});
 
 			$.ajax({
-				url: "http://192.168.1.119/index.php/upload/do_upload",
+				url: baseurl() + "upload/do_upload",
 				type: 'POST',
 				dataType: "json",
 				data: userfile,
@@ -75,7 +84,7 @@ $(document).ready(function(){
 		// generate img url
 		return_code += '<label>';
 		return_code += '<input type="radio" name="img_cover" value="' + file_name + file_ext + '"> ';
-		return_code += '<img src="../../img/' + file_name + thumb_text + file_ext + '"/>';
+		return_code += '<img src="' + baseurl() +'img/' + file_name + thumb_text + file_ext + '"/>';
 		return_code += '<input type="hidden" value="' + file_name + file_ext + '" name="product_pic[]">';
 		return_code += '</label>';
 
