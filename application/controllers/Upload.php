@@ -15,7 +15,11 @@ class Upload extends CI_Controller {
 
         public function do_upload()
         {
-
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+            } else { 
+                break;
+            }
                 $config['upload_path']          = './img/';
                 $config['allowed_types']        = 'gif|jpg|png';
                 //$config['max_size']             = 100;
@@ -41,7 +45,7 @@ class Upload extends CI_Controller {
 
                         $this -> load -> model('shop_insert', '', TRUE);
 
-                        $this -> shop_insert -> index_img($file_name.$file_ext, 1);
+                        $this -> shop_insert -> index_img($file_name.$file_ext, $user_id);
 
                         $data['json'] = array('status' => 'ok', 
                                         'msg' => array('file_ext' => $file_ext, 

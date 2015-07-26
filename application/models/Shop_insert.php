@@ -37,36 +37,36 @@ class Shop_insert extends CI_Model {
 
                 $insert_id = $this -> db -> insert_id();
 
-            $payment_matrix = array('payment_face' => 0, 'payment_mail' => 0, 'payment_paypal' => 0);
-            foreach ($product_content['payment_way'] as $val) {
-                if (array_key_exists($val, $payment_matrix)) {
-                    $payment_matrix[$val] = 1;
-                } 
-            }
+                $payment_matrix = array('payment_face' => 0, 'payment_mail' => 0, 'payment_paypal' => 0);
+                foreach ($product_content['payment_way'] as $val) {
+                    if (array_key_exists($val, $payment_matrix)) {
+                        $payment_matrix[$val] = 1;
+                    } 
+                }
 
-            $insert_query = 'INSERT INTO s_product_metadata (product_id, meta_key, meta_value, user_id) VALUES '.
-                '(?, "payment_face", ?, ?), '.
-                '(?, "payment_mail", ?, ?), '.
-                '(?, "payment_paypal", ?, ?)';
+                $insert_query = 'INSERT INTO s_product_metadata (product_id, meta_key, meta_value, user_id) VALUES '.
+                    '(?, "payment_face", ?, ?), '.
+                    '(?, "payment_mail", ?, ?), '.
+                    '(?, "payment_paypal", ?, ?)';
 
-            $insert_sql = $this -> db -> query($insert_query, array($insert_id, $payment_matrix['payment_face'], $user_id,
-                                $insert_id, $payment_matrix['payment_mail'], $user_id,
-                                 $insert_id, $payment_matrix['payment_paypal'], $user_id));
-            
-            // add img
+                $insert_sql = $this -> db -> query($insert_query, array($insert_id, $payment_matrix['payment_face'], $user_id,
+                                    $insert_id, $payment_matrix['payment_mail'], $user_id,
+                                     $insert_id, $payment_matrix['payment_paypal'], $user_id));
+                
+                // add img
 
-            foreach ($product_content['product_pic'] as $img) {
-                $update_query = 'UPDATE s_product_metadata SET product_id = ? WHERE user_id = ? AND meta_value = ?';
-                $update_sql = $this -> db -> query($update_query, array($insert_id, $user_id, $img));
-            }
+                foreach ($product_content['product_pic'] as $img) {
+                    $update_query = 'UPDATE s_product_metadata SET product_id = ? WHERE user_id = ? AND meta_value = ?';
+                    $update_sql = $this -> db -> query($update_query, array($insert_id, $user_id, $img));
+                }
 
-            $cover = $product_content['product_cover'];
-            $update_query = 'UPDATE s_product_metadata SET meta_key = ? WHERE user_id = ? AND meta_value = ?';
-            $update_sql = $this -> db -> query($update_query, array('feature_picture', $user_id, $cover));
-            
+                $cover = $product_content['product_cover'];
+                $update_query = 'UPDATE s_product_metadata SET meta_key = ? WHERE user_id = ? AND meta_value = ?';
+                $update_sql = $this -> db -> query($update_query, array('feature_picture', $user_id, $cover));
+                
 
 
-            return true;
+                return true;
             }
 
             return false;
@@ -86,6 +86,49 @@ class Shop_insert extends CI_Model {
             product_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             product_status ENUM ('active', 'end', 'removed') DEFAULT 'active',
             */
+
+        }
+
+        public function modify_product($product_id, $product_content) {
+            // function: modify product for user
+            //
+            // require/optional:     1..product 
+            //                       2..product content (array)              
+
+            // if success, return true, and success msg
+            // if fail, return false, and fail msg
+
+            // init error status and message
+            $status = false; $msg = 'Wrong Content received';
+
+            // check correctness of "prodct_content"
+            if (empty($product_content)) 
+                return array('status' => $status, 'message' => $msg);
+
+            $modify_query = 'UPDATE s_product SET product_title = ?, product_description = ? '.
+                'product_price = ?, product_status = ? WHERE product_id = ?';
+
+            $modify_sql = $this -> db -> query($modify_query, array($product_content['product_title'], 
+                $product_content['product_description'], $product_content['product_price'], 
+                $product_content['product_status'], $product_id)
+                );
+
+            // success add product, addon contents
+            $payment_matrix = array('payment_face' => 0, 'payment_mail' => 0, 'payment_paypal' => 0);
+            foreach ($product_content['payment_way'] as $val) {
+                if (array_key_exists($val, $payment_matrix)) {
+                    $payment_matrix[$val] = 1;
+                } 
+            }
+
+            $update_query = 'UPDATE s_product_metadata SET meta_value = ? '.
+                'WHERE meta_key = ? AND product_id = ?';
+
+            foreach ($payment_matrix as $key => $value) {
+                $update_query = $this -> db -> query($value, $key, $product_id);
+            }
+
+            return true;
 
         }
 

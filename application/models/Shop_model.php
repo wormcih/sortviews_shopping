@@ -8,6 +8,13 @@ class Shop_model extends CI_Model {
 
         }
 
+        public function get_userid($username) {
+                $get_query = 'SELECT user_id FROM s_user WHERE username = ? LIMIT 1';
+                $get_sql = $this -> db -> query($get_query, array($username));
+
+                if (count($get_sql -> result()) > 0) return $get_sql -> result()[0];
+                return false;
+        }
 
         public function list_taxonomy($taxonomy = 'category', $page = 1, $limit = 10) {
 
@@ -245,11 +252,11 @@ class Shop_model extends CI_Model {
                         'FROM s_comment AS c '.
                         'INNER JOIN s_user AS u ON u.user_id = c.comment_userid '.
                         'WHERE c.comment_productid = ? '.
-                        'ORDER BY c.comment_daytime DESC '.
+                        'ORDER BY c.comment_daytime ASC '.
                         'LIMIT ?, ?';
                 $get_sql = $this -> db ->query($get_query, array($product_id, $page_index, $limit));
 
-                return $get_sql -> result_array();
+                return $get_sql -> result();
 
         }
 

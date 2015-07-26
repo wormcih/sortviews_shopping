@@ -61,15 +61,29 @@ class Shop extends CI_Controller {
 			return;
 		}
 
+		$data['product_id'] = $product_id;
+		
 		$data['meta'] = $this -> shop_model -> get_product_metadata($user_name, $product_id);
 		$data['taxonomy'] = $this -> shop_model -> get_product_taxonomy($product_id);
+		$data['comments'] = $this -> shop_model -> get_comments($product_id);
 
 		$data['images'] = $this -> shop_model -> get_pictureurl($product_id);
 
 		$data['uuid'] = $this -> uuid -> v4();
 
+
 		$this->load->view('header');
 		$this->load->view('shop/shop_item', $data);
+		$this->load->view('footer');
+
+	}
+
+	public function category_list() {
+		$this -> load -> model('shop_model', '', TRUE);
+		$data['categories'] = $this -> shop_model -> list_taxonomy();
+
+		$this->load->view('header');
+		$this->load->view('category_list', $data);
 		$this->load->view('footer');
 
 	}

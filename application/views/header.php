@@ -55,8 +55,18 @@
 			<div class="container">
 				<div class="header_nav">
 					<ul>
-						<li><a href="">物品分類</a></li>
-						<li><a href="">放售物品</a></li>
+						<li><a href="<?php echo site_url("category"); ?>">物品分類</a></li>
+						<li><a href="<?php echo site_url("manage/add_shop"); ?>">放售物品</a></li>
+						<?php 
+
+						//$this->session->set_userdata(array('user_id' => 1, 'uid' => 1)); ?>
+						<li>|</li>
+						<?php if (isset($_SESSION['user_id'])) { ?>
+						<li><a href="<?php echo site_url("user/list"); ?>">已放售的物品</a></li>
+						<li><a href="<?php echo site_url("user/logout"); ?>">登出</a></li>
+						<?php } else { ?>
+						<li><a href="<?php echo site_url("user/login"); ?>">登入</a></li>
+						<?php } ?>
 					</ul>
 				</div>
 			</div>

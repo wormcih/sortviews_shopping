@@ -132,6 +132,9 @@
 							<h2>查詢及回應</h2>
 							<p class="bg-danger" style="padding: 10px">注意: 請勿在此張貼個人資料, 如電郵及電話號碼, 請使用 "聯絡買家" 功能交換個人資料</p>
 							<div>
+								<?php 
+								if (count($comments) > 0) {
+								foreach ($comments as $comment_item) { ?>
 								<div class="media">
 									<div class="media-left">
 										<a href="#">
@@ -139,22 +142,34 @@
 										</a>
 									</div>
 									<div class="media-body">
-										<h4 class="media-heading">耶穌:</h4>
-										<p>x你正呀喂!</p>
-
-										<div class="media">
-											<div class="media-left">
-												<a href="#">
-												<img class="media-object" src="https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xft1/v/t1.0-9/18818_10206713094964043_3575656666416845422_n.jpg?oh=92ba440df930908e9db99607b8d43f93&oe=56064D32" alt="..." style="width: 64px; height:64px;">
-												</a>
-											</div>
-											<div class="media-body">
-												<h4 class="media-heading"><span class="label label-success">店主</span> 不良貓:</h4>
-												<p>55!</p>
-											</div>
-										</div>
+										<h4 class="media-heading"><?php echo $comment_item -> username;  ?>:</h4>
+										<h4><?php echo $comment_item -> comment_title; ?></h4>
+										<p><?php echo $comment_item -> comment_content; ?></p>
 
 									</div>
+								</div>
+
+								<?php }
+								} ?>
+
+								<div class="comment_box">
+									<h4>查詢賣家</h4>
+									<?php if (!isset($_SESSION['user_id'])) { ?>
+									<p>請<a href="<?php echo site_url('user/login'); ?>">登入</a>再繼續, 沒有帳戶？請<a href="#">註冊帳戶</a></p>
+									<?php } else { ?>
+									<form action="<?php echo site_url('comment/process/'.$product_id); ?>" method="POST">
+										<p>標題</p>
+										<input type="text" name="comment_title" id="comment_title" />
+										<br/>
+
+										<p>詢問內容</p>
+										<textarea type="text" name="comment_description" id="description" row="5"></textarea>
+										<br/>
+
+										<input type="submit" value="回覆">
+									</form>
+									<?php } ?>
+
 								</div>
 
 							</div>

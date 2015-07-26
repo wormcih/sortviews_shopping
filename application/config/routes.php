@@ -62,6 +62,14 @@ $route['upload'] = 'upload/index';
 $route['manage/add_shop'] = 'user_manage/index';
 $route['manage/add_shop/process'] = 'user_manage/add_product';
 
+$route['user/login'] = 'user_manage/login_index';
+$route['user/login/process'] = 'user_manage/login';
+$route['user/logout'] = 'user_manage/logout';
+$route['user/list'] = 'user_manage/manage_productlist';
+
+$route['category'] = 'shop/category_list';
+
+$route['comment/process/(:num)'] = 'user_manage/add_comment/$1'
 
 
 

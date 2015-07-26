@@ -21,8 +21,11 @@
 		<div class="row">
 		 	<div class="col-md-8">
 		 		<div class="row">
-		 			<?php for ($i = 0; $i < count($dataset); $i++) { ?>
+		 			<?php $col_count = 3; ?>
+
 		 			<div class="col-md-4">
+		 			<?php for ($i = 0; $i < count($dataset) AND ($i < count($dataset) - $col_count + 1 OR $i == 0); $i += $col_count) { ?>
+						<div class="col-md-12">
 						<div class="thumbnail">
 							<img src="<?php echo $data[$i]['feature_picture']; ?>" alt="...">
 							<div class="caption">
@@ -31,8 +34,40 @@
 								<!---<p><?php echo $data[$i]['product_description']; ?></p>-->
 							</div>
 						</div>
+						</div>
+					<?php } ?>
 		 			</div>
-		 			<?php } ?>
+
+		 			<div class="col-md-4">
+		 			<?php for ($i = 1; $i < count($dataset) AND ($i < count($dataset) - $col_count + 2 OR $i == 1); $i += $col_count) { ?>
+						<div class="col-md-12">
+						<div class="thumbnail">
+							<img src="<?php echo $data[$i]['feature_picture']; ?>" alt="...">
+							<div class="caption">
+								<h3><a href="<?php echo base_url().'shop/'.$data[$i]['username'].'/'.$data[$i]['product_id']; ?>"><?php echo $data[$i]['product_title']; ?></a></h3>
+								<p>由 <?php echo $data[$i]['username']; ?> 提供</p>
+								<!---<p><?php echo $data[$i]['product_description']; ?></p>-->
+							</div>
+						</div>
+						</div>
+					<?php } ?>
+		 			</div>
+
+		 			<div class="col-md-4">
+		 			<?php for ($i = 2; $i < count($dataset) AND ($i < count($dataset) - $col_count + 3 OR $i == 2); $i += $col_count) { ?>
+						<div class="col-md-12">
+						<div class="thumbnail">
+							<img src="<?php echo $data[$i]['feature_picture']; ?>" alt="...">
+							<div class="caption">
+								<h3><a href="<?php echo base_url().'shop/'.$data[$i]['username'].'/'.$data[$i]['product_id']; ?>"><?php echo $data[$i]['product_title']; ?></a></h3>
+								<p>由 <?php echo $data[$i]['username']; ?> 提供</p>
+								<!---<p><?php echo $data[$i]['product_description']; ?></p>-->
+							</div>
+						</div>
+						</div>
+					<?php } ?>
+		 			</div>
+		 			
 		 		</div>
 		 	</div>
 		 	
