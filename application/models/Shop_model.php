@@ -119,7 +119,7 @@ class Shop_model extends CI_Model {
                 $picture_key = 'feature_picture'; // picture key, default is 'feature_picture'
 
                 $get_query = 'SELECT u.username, p.product_title, p.product_description, p.product_price, p.product_timestamp, '.
-                        'p.product_status, img.meta_value AS feature_picture '.
+                        'p.product_status, p.product_usestatus, img.meta_value AS feature_picture '.
                         'FROM s_product AS p '.
 
                         'INNER JOIN s_product_metadata AS img '.
@@ -258,6 +258,13 @@ class Shop_model extends CI_Model {
 
                 return $get_sql -> result();
 
+        }
+
+        public function get_rand_product() {
+                $get_query = 'SELECT r1.product_id, r1.product_title, r1.product_price, r1.product_status, s_user.username, meta.meta_value AS img_url FROM s_product AS r1 INNER JOIN (SELECT CEIL(RAND() * (SELECT MAX(`product_id`) FROM s_product)) AS id) AS r2 ON r1.product_id >= r2.id INNER JOIN s_user ON r1.user_id = s_user.user_id INNER JOIN s_product_metadata AS meta ON meta.meta_id = r1.product_id ORDER BY r1.product_id ASC LIMIT 4';
+                $get_sql = $this -> db -> query($get_query);
+
+                return $get_sql -> result();
         }
 
 }

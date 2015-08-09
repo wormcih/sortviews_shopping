@@ -1,12 +1,11 @@
 <?php
 	$product = $data[0];
 ?>
-		<?php echo $uuid; ?>
 		<div class="container">
 			<div class="breadcrumb_section">
 				<ol class="breadcrumb">
 					<li><a href="#">Sortping</a></li>
-					<li>會員 <a href="#"><?php echo $product -> username; ?></a> 的店舖</li>
+					<li>會員 <a href="<?php echo base_url().'shop/'.$product -> username; ?>"><?php echo $product -> username; ?></a> 的店舖</li>
 					<li class="active"><?php echo $product -> product_title; ?></li>
 				</ol>
 			</div>
@@ -57,12 +56,18 @@
 						<p>
 							<?php 
 							$good_status = '未知';
-							if (isset($meta['good_status'])){
-							if ($meta['good_status'] == 'new') $good_status = '全新';
-							else $good_status = '中古品';
-							}
+							if ($product -> product_usestatus == 'new') $good_status = '全新';
+							elseif ($product -> product_usestatus == 'old') $good_status = '舊品';
 							?>
+							<?php if ($product -> product_status == 'active') { ?>
 							<span style="color: #3FCA36; padding-right: 6px; border-right: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 開放發售中</span>
+							<?php } elseif ($product -> product_status == 'deactive') { ?>
+							<span style="color: #ca9f6c; padding-right: 6px; border-right: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 物品發售已暫停</span>
+							<?php } elseif ($product -> product_status == 'sold') { ?>
+							<span style="color: #ca4e5a; padding-right: 6px; border-right: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 已下架</span>
+							<?php } else { ?>
+							<span style="color: #ddd; padding-right: 6px; border-right: 1px solid #ddd; margin-right: 6px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> DEL</span>
+							<?php } ?>
 							<span>貨品狀況: <?php echo $good_status; ?></span>
 						</p>
 						
@@ -117,13 +122,8 @@
 						<div class="shop_section">
 							<h2>店舖資訊</h2>
 							<p><a href=""><span><?php //echo $product -> shop_owner; ?></span></a></p>
-							<p>目前刊登商品: <a href="">10 件</a></p>
+							<p>目前刊登物品: <a href="">10 件</a></p>
 							<p>可靠度: <span style="color: #3FCA36;">高</span></p>
-						</div>
-
-						<div class="relative_section">
-							<h2>其他相關商品</h2>
-							<p><a href=""><span><?php //echo $product -> shop_owner; ?></span></a></p>
 						</div>
 					</div>
 
@@ -150,35 +150,45 @@
 								</div>
 
 								<?php }
-								} ?>
+								} else { ?>
+								<p>暫時未有發問及回覆，要發問嗎？</p>
+								<?php } ?>
 
 								<div class="comment_box">
 									<h4>查詢賣家</h4>
 									<?php if (!isset($_SESSION['user_id'])) { ?>
 									<p>請<a href="<?php echo site_url('user/login'); ?>">登入</a>再繼續, 沒有帳戶？請<a href="#">註冊帳戶</a></p>
 									<?php } else { ?>
-									<form action="<?php echo site_url('comment/process/'.$product_id); ?>" method="POST">
-										<p>標題</p>
-										<input type="text" name="comment_title" id="comment_title" />
-										<br/>
-
+									<form action="<?php echo site_url('comment/process'); ?>" method="POST">
 										<p>詢問內容</p>
-										<textarea type="text" name="comment_description" id="description" row="5"></textarea>
+										<textarea type="text" name="comment" id="description" class="form-control" row="5" placeholder="對物品有提問？在此輸入詢問的內容！"></textarea>
 										<br/>
-
-										<input type="submit" value="回覆">
+										<input type="hidden" name="product" value="<?php echo $product_id; ?>">
+										<input type="hidden" name="redirect" value="<?php echo $this->uri->uri_string(); ?>">
+										<input class="btn btn-success" type="submit" value="回覆">
 									</form>
 									<?php } ?>
 
 								</div>
 
 							</div>
-
-							<p>Hi</p>
 						</div>
 					</div>
 
 				</div>
 				
+			</div>
+			<div class="relative_section">
+				<h2>其他相似的物品</h2>
+				<div class="row">
+				<?php foreach ($related as $item) { ?>
+					<div class="col-md-3">
+					<p><img src="<?php base_url(); ?>/img/<?php echo $item -> img_url; ?>" /></p>
+					<p><a href="<?php base_url(); ?>/shop/<?php echo $item -> username; ?>/<?php echo $item -> product_id; ?>"><?php echo $item -> product_title; ?></a></p>
+					<p><?php echo $item -> username; ?></p>
+					</div>
+				<?php } ?>					
+				</div>
+				<p><a href=""><span><?php //echo $product -> shop_owner; ?></span></a></p>
 			</div>
 		</div>

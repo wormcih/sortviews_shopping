@@ -47,6 +47,25 @@ class User_manage extends CI_Controller {
 
     }
 
+    public function add_comment() {
+
+        if (isset($_SESSION['user_id']) && $this -> input -> post('product') && $this -> input -> post('comment')) {
+            $user_id = intval($_SESSION['user_id']);
+            $product_id = intval($this -> input -> post('product'));
+            $content = $this -> input -> post('comment');
+
+            if ($content == "") redirect(base_url(), 'location', 302);
+
+        } else {
+            redirect(base_url(), 'location', 302);
+        }
+
+        $this -> load -> model('shop_insert', '', TRUE);
+        $this -> shop_insert -> add_comment($product_id, $user_id, $content);
+
+        redirect(base_url().$this -> input -> post('redirect'), 'location', 302);
+    }
+
     public function manage_productlist($username = 'wormcih') {
         $this -> load -> model('shop_model', '', TRUE);
 

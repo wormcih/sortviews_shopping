@@ -143,6 +143,14 @@ class Shop_insert extends CI_Model {
             }
         }
 
+        public function add_comment($product_id, $user_id, $content) {
+            $add_sql = 'INSERT INTO s_comment (comment_productid, comment_userid, '.
+                'comment_content) VALUES (?, ?, ?)';
+            $add_query = $this -> db -> query($add_sql, array($product_id, $user_id, $content));
+
+            return true;
+        }
+
         private function add_product_meta($key, $val) {
 
         }

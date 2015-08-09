@@ -70,6 +70,7 @@ class Shop extends CI_Controller {
 		$data['images'] = $this -> shop_model -> get_pictureurl($product_id);
 
 		$data['uuid'] = $this -> uuid -> v4();
+		$data['related'] = $this -> shop_model -> get_rand_product();
 
 
 		$this->load->view('header');

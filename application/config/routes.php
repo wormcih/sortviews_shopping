@@ -69,7 +69,7 @@ $route['user/list'] = 'user_manage/manage_productlist';
 
 $route['category'] = 'shop/category_list';
 
-$route['comment/process/(:num)'] = 'user_manage/add_comment/$1'
+$route['comment/process'] = 'user_manage/add_comment';
 
 
 
